@@ -23,10 +23,12 @@
 package org.glyptodon.guacamole.auth.oauth;
 
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 import java.util.Arrays;
+import javax.servlet.http.HttpServletRequest;
 import org.glyptodon.guacamole.GuacamoleException;
+import org.glyptodon.guacamole.auth.oauth.user.AuthenticatedUser;
 import org.glyptodon.guacamole.form.Field;
-import org.glyptodon.guacamole.net.auth.AuthenticatedUser;
 import org.glyptodon.guacamole.net.auth.Credentials;
 import org.glyptodon.guacamole.net.auth.credentials.CredentialsInfo;
 import org.glyptodon.guacamole.net.auth.credentials.GuacamoleInvalidCredentialsException;
@@ -53,6 +55,12 @@ public class AuthenticationProviderService {
     private ConfigurationService confService;
 
     /**
+     * Provider for AuthenticatedUser objects.
+     */
+    @Inject
+    private Provider<AuthenticatedUser> authenticatedUserProvider;
+
+    /**
      * Returns an AuthenticatedUser representing the user authenticated by the
      * given credentials.
      *
@@ -69,6 +77,20 @@ public class AuthenticationProviderService {
      */
     public AuthenticatedUser authenticateUser(Credentials credentials)
             throws GuacamoleException {
+
+        String code = null;
+
+        // Pull OAuth code from request if present
+        HttpServletRequest request = credentials.getRequest();
+        if (request != null)
+            code = request.getParameter(OAuthCodeField.PARAMETER_NAME);
+
+        // TODO: Actually complete authentication using received code
+        if (code != null) {
+            AuthenticatedUser authenticatedUser = authenticatedUserProvider.get();
+            authenticatedUser.init("STUB", credentials);
+            return authenticatedUser;
+        }
 
         // Request auth code
         throw new GuacamoleInvalidCredentialsException("Invalid login.",
