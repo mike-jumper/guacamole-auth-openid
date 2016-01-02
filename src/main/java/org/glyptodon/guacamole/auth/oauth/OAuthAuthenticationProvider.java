@@ -22,13 +22,13 @@
 
 package org.glyptodon.guacamole.auth.oauth;
 
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 import org.glyptodon.guacamole.GuacamoleException;
 import org.glyptodon.guacamole.net.auth.AuthenticatedUser;
 import org.glyptodon.guacamole.net.auth.AuthenticationProvider;
 import org.glyptodon.guacamole.net.auth.Credentials;
 import org.glyptodon.guacamole.net.auth.UserContext;
-import org.glyptodon.guacamole.net.auth.credentials.CredentialsInfo;
-import org.glyptodon.guacamole.net.auth.credentials.GuacamoleInvalidCredentialsException;
 
 /**
  * Guacamole authentication backend which authenticates users using an
@@ -40,6 +40,29 @@ import org.glyptodon.guacamole.net.auth.credentials.GuacamoleInvalidCredentialsE
  */
 public class OAuthAuthenticationProvider implements AuthenticationProvider {
 
+    /**
+     * Injector which will manage the object graph of this authentication
+     * provider.
+     */
+    private final Injector injector;
+
+    /**
+     * Creates a new OAuthAuthenticationProvider that authenticates users
+     * against an OAuth service
+     *
+     * @throws GuacamoleException
+     *     If a required property is missing, or an error occurs while parsing
+     *     a property.
+     */
+    public OAuthAuthenticationProvider() throws GuacamoleException {
+
+        // Set up Guice injector.
+        injector = Guice.createInjector(
+            new OAuthAuthenticationProviderModule(this)
+        );
+
+    }
+
     @Override
     public String getIdentifier() {
         return "oauth";
@@ -49,11 +72,9 @@ public class OAuthAuthenticationProvider implements AuthenticationProvider {
     public AuthenticatedUser authenticateUser(Credentials credentials)
             throws GuacamoleException {
 
-        // STUB
-        throw new GuacamoleInvalidCredentialsException(
-            "Invalid login.",
-            CredentialsInfo.USERNAME_PASSWORD
-        );
+        // Attempt to authenticate user with given credentials
+        AuthenticationProviderService authProviderService = injector.getInstance(AuthenticationProviderService.class);
+        return authProviderService.authenticateUser(credentials);
 
     }
 
