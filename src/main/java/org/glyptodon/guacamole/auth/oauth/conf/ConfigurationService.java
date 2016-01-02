@@ -20,7 +20,7 @@
  * THE SOFTWARE.
  */
 
-package org.glyptodon.guacamole.auth.oauth;
+package org.glyptodon.guacamole.auth.oauth.conf;
 
 import com.google.inject.Inject;
 import org.glyptodon.guacamole.GuacamoleException;

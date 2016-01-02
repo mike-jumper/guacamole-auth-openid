@@ -20,7 +20,7 @@
  * THE SOFTWARE.
  */
 
-package org.glyptodon.guacamole.auth.oauth;
+package org.glyptodon.guacamole.auth.oauth.conf;
 
 import org.glyptodon.guacamole.properties.StringGuacamoleProperty;
 

@@ -22,6 +22,8 @@
 
 package org.glyptodon.guacamole.auth.oauth;
 
+import org.glyptodon.guacamole.auth.oauth.form.OAuthCodeField;
+import org.glyptodon.guacamole.auth.oauth.conf.ConfigurationService;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import java.util.Arrays;

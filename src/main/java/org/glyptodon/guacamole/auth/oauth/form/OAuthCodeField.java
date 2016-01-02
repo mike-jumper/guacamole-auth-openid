@@ -20,7 +20,7 @@
  * THE SOFTWARE.
  */
 
-package org.glyptodon.guacamole.auth.oauth;
+package org.glyptodon.guacamole.auth.oauth.form;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
