@@ -22,6 +22,7 @@
 
 package org.glyptodon.guacamole.auth.oauth;
 
+import org.glyptodon.guacamole.auth.oauth.token.TokenResponse;
 import org.glyptodon.guacamole.auth.oauth.form.OAuthCodeField;
 import org.glyptodon.guacamole.auth.oauth.conf.ConfigurationService;
 import com.google.inject.Inject;
@@ -29,6 +30,7 @@ import com.google.inject.Provider;
 import java.util.Arrays;
 import javax.servlet.http.HttpServletRequest;
 import org.glyptodon.guacamole.GuacamoleException;
+import org.glyptodon.guacamole.auth.oauth.token.TokenService;
 import org.glyptodon.guacamole.auth.oauth.user.AuthenticatedUser;
 import org.glyptodon.guacamole.form.Field;
 import org.glyptodon.guacamole.net.auth.Credentials;
@@ -55,6 +57,12 @@ public class AuthenticationProviderService {
      */
     @Inject
     private ConfigurationService confService;
+
+    /**
+     * Service for producing authentication tokens from OAuth codes.
+     */
+    @Inject
+    private TokenService tokenService;
 
     /**
      * Provider for AuthenticatedUser objects.
@@ -89,9 +97,16 @@ public class AuthenticationProviderService {
 
         // TODO: Actually complete authentication using received code
         if (code != null) {
+
+            // POST code and client information to OAuth token endpoint
+            TokenResponse response = tokenService.getTokenFromCode(code);
+            logger.debug("RESPONSE: {}", response);
+
+            // Create corresponding authenticated user
             AuthenticatedUser authenticatedUser = authenticatedUserProvider.get();
             authenticatedUser.init("STUB", credentials);
             return authenticatedUser;
+
         }
 
         // Request auth code
