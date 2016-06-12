@@ -24,11 +24,11 @@ package org.glyptodon.guacamole.auth.oauth;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import org.glyptodon.guacamole.GuacamoleException;
-import org.glyptodon.guacamole.net.auth.AuthenticatedUser;
-import org.glyptodon.guacamole.net.auth.AuthenticationProvider;
-import org.glyptodon.guacamole.net.auth.Credentials;
-import org.glyptodon.guacamole.net.auth.UserContext;
+import org.apache.guacamole.GuacamoleException;
+import org.apache.guacamole.net.auth.AuthenticatedUser;
+import org.apache.guacamole.net.auth.AuthenticationProvider;
+import org.apache.guacamole.net.auth.Credentials;
+import org.apache.guacamole.net.auth.UserContext;
 
 /**
  * Guacamole authentication backend which authenticates users using an

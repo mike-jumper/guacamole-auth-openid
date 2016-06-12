@@ -21,37 +21,13 @@
  */
 
 /**
- * Config block which registers OAuth-specific field types.
+ * Controller for the "GUAC_OAUTH_TOKEN" field which simply redirects the user
+ * immediately to the authorization URI.
  */
-angular.module('guacOAuth').config(['formServiceProvider',
-        function guacOAuthConfig(formServiceProvider) {
+angular.module('guacOAuth').controller('guacOAuthController', ['$scope',
+    function guacOAuthController($scope) {
 
-    // Define field for token from OAuth service
-    formServiceProvider.registerFieldType("GUAC_OAUTH_TOKEN", {
-        template   : '',
-        controller : 'guacOAuthController',
-        module     : 'guacOAuth'
-    });
-
-}]);
-
-/**
- * Config block which augments the existing routing, providing special handling
- * for the "id_token=" fragments provided by OpenID Connect.
- */
-angular.module('index').config(['$routeProvider',
-        function indexRouteConfig($routeProvider) {
-
-    // Transform "/#/id_token=..." to "/#/?id_token=..."
-    $routeProvider.when('/id_token=:response', {
-
-        template   : '',
-        controller : ['$location', function reroute($location) {
-            var params = $location.path().substring(1);
-            $location.url('/');
-            $location.search(params);
-        }]
-
-    });
+    // Redirect to authorization URI
+    window.location = $scope.field.authorizationURI;
 
 }]);
