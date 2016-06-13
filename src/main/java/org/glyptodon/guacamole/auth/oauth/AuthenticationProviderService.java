@@ -33,6 +33,7 @@ import org.apache.guacamole.net.auth.credentials.CredentialsInfo;
 import org.apache.guacamole.net.auth.credentials.GuacamoleInvalidCredentialsException;
 import org.glyptodon.guacamole.auth.oauth.conf.ConfigurationService;
 import org.glyptodon.guacamole.auth.oauth.form.OAuthTokenField;
+import org.glyptodon.guacamole.auth.oauth.token.TokenValidationService;
 import org.glyptodon.guacamole.auth.oauth.user.AuthenticatedUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,6 +56,12 @@ public class AuthenticationProviderService {
      */
     @Inject
     private ConfigurationService confService;
+
+    /**
+     * Service for validating received ID tokens.
+     */
+    @Inject
+    private TokenValidationService tokenService;
 
     /**
      * Provider for AuthenticatedUser objects.
@@ -87,12 +94,12 @@ public class AuthenticationProviderService {
         if (request != null)
             token = request.getParameter(OAuthTokenField.PARAMETER_NAME);
 
-        // TODO: Actually validate received token
+        // If token provided, validate and produce authenticated user
         if (token != null) {
 
             // Create corresponding authenticated user
             AuthenticatedUser authenticatedUser = authenticatedUserProvider.get();
-            authenticatedUser.init("STUB", credentials);
+            authenticatedUser.init(tokenService.processUsername(token), credentials);
             return authenticatedUser;
 
         }

@@ -28,6 +28,7 @@ import org.apache.guacamole.GuacamoleException;
 import org.apache.guacamole.environment.Environment;
 import org.apache.guacamole.environment.LocalEnvironment;
 import org.apache.guacamole.net.auth.AuthenticationProvider;
+import org.glyptodon.guacamole.auth.oauth.token.TokenValidationService;
 
 /**
  * Guice module which configures OAuth-specific injections.
@@ -78,6 +79,7 @@ public class OAuthAuthenticationProviderModule extends AbstractModule {
 
         // Bind OAuth-specific services
         bind(ConfigurationService.class);
+        bind(TokenValidationService.class);
 
     }
 
