@@ -99,7 +99,8 @@ public class OAuthAuthenticationProvider implements AuthenticationProvider {
 
     @Override
     public UserContext updateUserContext(UserContext context,
-            AuthenticatedUser authenticatedUser) throws GuacamoleException {
+            AuthenticatedUser authenticatedUser, Credentials credentials)
+            throws GuacamoleException {
 
         // No update necessary
         return context;
